@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>汇科智控工厂软件</title>
+    <style>
+        html, body { padding: 0; margin: 0; font-size: 14px; color: #303133; background-color: #fbfbfb; }
+        div { box-sizing: border-box; }
+        .title-quote { margin-bottom: 10px; margin-top: 0; padding-left: 10px; border-left: 3px solid #009688; }
+        .container { width: 70%; margin: 0 auto; padding: 10px; background-color: #f0f0f0; min-width: 768px; }
+        .container .container-left { width: 60%; float: left; padding-right: 10px; }
+        .container .container-right { width: 40%; float: right; }
+        .container:after { content: ''; display: table; clear: both; }
+        .file-box, .collection-data { border: 1px solid #ccc; padding: 5px; }
+        .file-form .form-item { margin-bottom: 10px; }
+        .file-form .form-item:first-child { display: table; width: 100%; }
+        .file-form .form-item:first-child label { display: table-cell; width: 18%; }
+        .file-form .form-item:first-child input { display: table-cell; width: 97%; }
+        .file-form .form-item:last-child input, .file-form .form-item:last-child button { display: inline-block; }
+        .file-form .form-item:last-child input { width: 55%; }
+        .file-form .form-item:last-child button { width: 20%; }
+        .configuration { margin-top: 15px; border: 1px solid #ccc; padding: 5px; }
+        .configuration .network p { text-align: center; }
+        .network-form .form-item { clear: both; margin-bottom: 10px; }
+        .network-form .form-item label { float: left; display: block; padding-right: 10px; width: 80px; font-weight: 400; }
+        .network-form .input-block { margin-left: 90px; }
+        .network-form .input-block .input-inner, .network-form .input-block .select-inner { width: 98%; }
+        .configuration .btn-controls .restart { width: 80px; float: left; }
+        .configuration .btn-controls div { margin-left: 90px;}
+        .configuration .btn-controls .setting, .configuration .btn-controls .resume { width: 49%; }
+        .configuration .btn-controls .resume { color: #ab0404; }
+        .data-table { width: 100%; }
+        .data-table th:first-child { text-align: start; width: 60px; }
+        .data-table tr > td:first-child { padding-left: 0; }
+        .data-table td { padding: 5px; }
+        .data-table td input { width: 100%; }
+        .collection-data .btn-controls { padding-left: 65px; width: 100%; display: table; }
+        .collection-data .btn-controls div { display: table-cell; width: 50%; padding: 5px; }
+        .collection-data .btn-controls div:last-child { padding-right: 2.5px; }
+        .collection-data .btn-controls button { width: 100%; }
+        .el-progress { margin-bottom: 8px; width: 300px; position: relative; line-height: 1; display: none; }
+        .el-progress .el-progress-bar { padding-right: 50px; display: inline-block; vertical-align: middle; width: 100%; margin-right: -55px; box-sizing: border-box; }
+        .el-progress .el-progress-bar__outer { height: 6px; border-radius: 100px; background-color: #ccc; overflow: hidden; position: relative; vertical-align: middle; }
+        .el-progress .el-progress-bar__inner { position: absolute; left: 0; top: 0; height: 100%; background-color: #009688; text-align: right; border-radius: 100px; line-height: 1; white-space: nowrap; }
+        .el-progress .el-progress-bar__inner:after { display: inline-block; content: ""; height: 100%; vertical-align: middle; }
+        .el-progress .el-progress__text { font-size: 14px; color: #606266; display: inline-block; vertical-align: middle; margin-left: 10px; line-height: 1; }
+        /*# sourceMappingURL=HKZK.css.map */
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="container-left">
+        <div class="file-box">
+            <p class="title-quote">升级IAP</p>
+            <div class="file">
+                <form class="file-form" action="javascript:uploadfile()">
+                    <div class="form-item">
+                        <label>升级文件</label>
+                        <input type="file" name="file" id="file" accept=".bin">
+                    </div>
+                    <div class="el-progress el-progress--line">
+                        <div class="el-progress-bar">
+                            <div class="el-progress-bar__outer">
+                                <div class="el-progress-bar__inner" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        <div class="el-progress__text">0%</div>
+                    </div>
+                    <div class="form-item">
+                        <input type="text" class="file-path input-inner">
+                        <button type="submit" class="upgrades">升级</button>
+                        <button type="button" class="upgrades-all" disabled="disabled">全部升级</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="configuration">
+            <div class="network">
+                <form class="network-form">
+                    <p>网络配置</p>
+                    <div class="form-item">
+                        <label>IP</label>
+                        <div class="input-block">
+                            <input type="text" class="input-inner">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>Mask</label>
+                        <div class="input-block">
+                            <input type="text" class="input-inner">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>Mac</label>
+                        <div class="input-block">
+                            <input type="text" class="input-inner">
+                        </div>
+                    </div>
+                    <p>串口配置</p>
+                    <div class="form-item">
+                        <label>本机地址</label>
+                        <div class="input-block">
+                            <input type="number" class="input-inner">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>波特率</label>
+                        <div class="input-block">
+                            <input type="number" class="input-inner">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>停止位</label>
+                        <div class="input-block">
+                            <input type="number" class="input-inner">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>数据长度</label>
+                        <div class="input-block">
+                            <input type="number" class="input-inner">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>奇偶校验</label>
+                        <div class="input-block">
+                            <input type="number" class="input-inner">
+                        </div>
+                    </div>
+                    <p>输入通道</p>
+                    <div class="coms-contanier">
+
+                    </div>
+                    <div class="btn-controls">
+                        <button type="button" class="restart">重启</button>
+                        <div>
+                            <button type="button" class="setting">设置</button>
+                            <button type="button" class="resume">恢复出厂</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container-right">
+        <div class="collection-data">
+            <p class="title-quote">采集数据</p>
+            <table class="data-table" id="data-table">
+                <thead>
+                <tr>
+                    <th>通道</th>
+                    <th>输入</th>
+                    <th>输出</th>
+                </tr>
+                </thead>
+                <tbody id="collectionData-cols">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    // 初始化option默认选中项
+    function changeOption(val, selectV) {
+        if (val === selectV){
+            return 'selected'
+        }
+        return ''
+    }
+    function optionHtml(val) {
+        var optionHtmls = '<option value="0"  '+ changeOption('0', val) +'>开关量</option>' +
+            '<option value="1" '+ changeOption('1', val) +'>0-10V</option>' +
+            '<option value="2" '+ changeOption('2', val) +'>0-20mA</option>' +
+            '<option value="3" '+ changeOption('3', val) +'>0-10k</option>';
+        return optionHtmls;
+    }
+    // 上传
+    var selectLength = 0, ComsIndexArr = [], comsValueArr = [];
+    function uploadfile() {
+        var file = document.getElementById("file");
+        if(file.files && file.files[0]) {
+            var url = '/update.cgi';
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", url);
+            var el_progress = document.getElementsByClassName('el-progress')[0];
+            xhr.addEventListener("error", function () {
+                // alert('上传失败');
+                el_progress.style.display = 'none';
+            }, false);
+            xhr.upload.addEventListener("progress", function (e) {
+                if (e.lengthComputable) {
+                    var progress = Math.round(e.loaded * 100 / e.total);
+                    console.log(progress);
+                    //进度条
+                    el_progress.style.display = 'block';
+                    document.getElementsByClassName('el-progress-bar__inner')[0].style.width = progress + '%';
+                    document.getElementsByClassName('el-progress__text')[0].innerText = progress + '%';
+                    if(progress >= 100){
+                        el_progress.style.display = 'none';
+                    }
+                }
+            }, false);
+            xhr.onreadystatechange = function (e) {
+                if (xhr.readyState == 4) {
+                    if (xhr.status === 200) {
+                        alert('上传成功');
+                    } else {
+                        alert('上传失败');
+                    }
+                    el_progress.style.display = 'none';
+                }
+            };
+            xhr.send(file.files[0]);
+        }
+    };
+    function fillData(data) {
+        var inputs = document.getElementsByClassName('input-inner');
+        for(var x = 0; x < data.length; x++){
+            var dataArr = [];
+            if(data[x].search('#version') != -1){
+                dataArr = data[x].split("-->");
+                inputs[0].value = dataArr[1];
+                continue;
+            }else if(data[x].search('#ip') != -1){
+                dataArr = data[x].split("-->");
+                inputs[1].value = dataArr[1];
+                continue;
+            }else if(data[x].search('#mask') != -1){
+                dataArr = data[x].split("-->");
+                inputs[2].value = dataArr[1];
+                continue;
+            }else if(data[x].search('#mac') != -1){
+                dataArr = data[x].split("-->");
+                inputs[3].value = dataArr[1];
+                continue;
+            }else if(data[x].search('#addr') != -1){
+                dataArr = data[x].split("-->");
+                inputs[4].value = dataArr[1];
+                continue;
+            }else if(data[x].search('#band') != -1){
+                dataArr = data[x].split("-->");
+                inputs[5].value = dataArr[1];
+                continue;
+            }else if(data[x].search('#stop') != -1){
+                dataArr = data[x].split("-->");
+                inputs[6].value = dataArr[1];
+                continue;
+            }else if(data[x].search('#length') != -1){
+                dataArr = data[x].split("-->");
+                inputs[7].value = dataArr[1];
+                continue;
+            }else if(data[x].search('#parity') != -1){
+                dataArr = data[x].split("-->");
+                inputs[8].value = dataArr[1];
+                continue;
+            }
+        }
+        for (var j = 0; j < data.length; j++) {
+            if (data[j].search('com') != -1 ){
+                selectLength++;
+                comsValueArr.push(data[j].slice(data[j].length - 1, data[j].length));
+                ComsIndexArr.push(data[j].slice(8, data[j].length - 4));
+            }
+        }
+        var comsSelectsHtml = '';
+        for (var i = 0; i < selectLength; i++){
+            comsSelectsHtml += '<div class="form-item">' +
+                '                            <label>'+ "通道" + ComsIndexArr[i] +'</label>\n' +
+                '                            <div class="input-block">\n' +
+                '                                <select class="select-inner" name="com'+ i +'">'+ optionHtml(comsValueArr[i]) +'</select>\n' +
+                '                            </div>\n' +
+                '                        </div>'
+        }
+        document.getElementsByClassName('coms-contanier')[0].innerHTML = comsSelectsHtml;
+    };
+    window.onload = function () {
+        // 获取数据
+        var url = '/getSet.cgi';
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url);
+        xhr.send();
+        xhr.addEventListener("error", function () {
+            alert('请求失败');
+        }, false);
+        xhr.onreadystatechange = function (e) {
+            if (xhr.readyState == 4) {
+                if (xhr.status === 200) {
+                    var data = xhr.responseText.split('\r\n');
+                    fillData(data);
+                } else {
+                    alert('请求失败');
+                }
+            }
+        };
+        //全部升级
+        document.getElementsByClassName('upgrades-all')[0].onclick = function () {
+            console.log('全部升级');
+        };
+        //设置
+        document.getElementsByClassName('setting')[0].onclick = function () {
+            var url = '/set.cgi';
+            var inputs = document.getElementsByClassName('input-inner');
+            var inputsData = '';
+            for (var y = 1; y < inputs.length; y++) {
+                switch(y) {
+                    case 1:
+                        inputsData += 'ip=' + inputs[y].value;
+                        break;
+                    case 2:
+                        inputsData += '&mask=' + inputs[y].value;
+                        break;
+                    case 3:
+                        inputsData += '&mac=' + inputs[y].value;
+                        break;
+                    case 4:
+                        inputsData += '&addr=' + inputs[y].value;
+                        break;
+                    case 5:
+                        inputsData += '&band=' + inputs[y].value;
+                        break;
+                    case 6:
+                        inputsData += '&stop=' + inputs[y].value;
+                        break;
+                    case 7:
+                        inputsData += '&length=' + inputs[y].value;
+                        break;
+                    default:
+                        inputsData += '&parity=' + inputs[y].value;
+                }
+            }
+            var selects = document.getElementsByClassName('select-inner');
+            for (var z = 0; z < selectLength; z++){
+                inputsData += '&com' + ComsIndexArr[z] + '=' + selects[z].value;
+            }
+            url = url + '?' + inputsData;
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url);
+            xhr.send();
+            xhr.addEventListener("error", function () {
+                alert('操作失败');
+            }, false);
+            xhr.onreadystatechange = function (e) {
+                if (xhr.readyState == 4) {
+                    if (xhr.status === 200) {
+                        alert('设置成功')
+                    } else {
+                        alert('操作失败');
+                    }
+                }
+            };
+        };
+        // 恢复出厂设置
+        document.getElementsByClassName('resume')[0].onclick = function () {
+            var url = '/clear.cgi';
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url);
+            xhr.send();
+            xhr.addEventListener("error", function () {
+                alert('请求失败');
+            }, false);
+            xhr.onreadystatechange = function (e) {
+                if (xhr.readyState == 4) {
+                    if (xhr.status === 200) {
+                        alert('恢复出厂成功')
+                    } else {
+                        alert('操作失败');
+                    }
+                }
+            };
+        };
+        // 重启
+        document.getElementsByClassName('restart')[0].onclick = function () {
+            var url = '/reboot.cgi';
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url);
+            xhr.send();
+            xhr.addEventListener("error", function () {
+                alert('请求失败');
+            }, false);
+            xhr.onreadystatechange = function (e) {
+                if (xhr.readyState == 4) {
+                    if (xhr.status === 200) {
+                        alert('重启成功')
+                    } else {
+                        alert('重启失败');
+                    }
+                }
+            };
+        };
+        // 轮询获取采集数据
+        getCollectionData();
+    };
+    // 轮询获取采集数据
+    var collectionData = function (data) {
+        var newData = {
+            indata: {},
+            outdata: {}
+        }
+        for (var i = 0; i < data.length; i++) {
+            var _data = data[i];
+            var keyValue = _data.split('-->');
+            if(_data.search('#in') !== -1){
+                var key = keyValue[0].split('<!--#in')[1];
+                var value = keyValue[1];
+                newData.indata[key] = value;
+            }else if (_data.search('#out') !== -1){
+                var key = keyValue[0].split('<!--#out')[1];
+                var value = keyValue[1];
+                newData.outdata[key] = value;
+            }
+        }
+        return newData;
+    }
+    function getCollectionData() {
+        var url = '/getData.cgi';
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url);
+        xhr.send();
+        xhr.addEventListener("error", function () {
+            // alert('获取失败');
+            clearInterval(Timer);
+        }, false);
+        xhr.onreadystatechange = function (e) {
+            if (xhr.readyState == 4) {
+                if (xhr.status === 200) {
+                    var data = xhr.responseText.split('\r\n');
+                    var newData = collectionData(data);
+                    var colIndexArr = [], inValue = [], outValue = [];
+                    for(var k in newData.indata) {
+                        colIndexArr.push(k.split('com')[1]);
+                        inValue.push(newData.indata[k]);
+                        outValue.push(newData.outdata[k]);
+                    }
+                    var comsInputHtml = '';
+                    for (var i = 0; i < inValue.length; i++){
+                        comsInputHtml += '<tr>\n' +
+                            '                 <td>'+ "通道" + colIndexArr[i] +'</td>\n' +
+                            '                 <td><input class="edit-input" disabled type="text" value="'+ inValue[i] +'"></td>\n' +
+                            '                 <td><input class="edit-input" data-col="outcom'+ colIndexArr[i] +'" type="text" value="'+ outValue[i] +'"></td>\n' +
+                            '             </tr>'
+                    }
+                    document.getElementById('collectionData-cols').innerHTML = comsInputHtml;
+                    setTimeout(function () {
+                        var editInput = document.getElementsByClassName('edit-input');
+                        for (var i = 0; i < editInput.length; i++){
+                            editInput[i].addEventListener('focus', function () {
+                                clearInterval(Timer);
+                                Timer = null;
+                            });
+                            editInput[i].addEventListener('blur', function () {
+                                getCollectionData();
+                                if (Timer === null){
+                                    Timer = setInterval("getCollectionData()" , 2000);
+                                }
+                            });
+                            editInput[i].addEventListener('keydown', function (e) {
+                                if (e.keyCode === 13) {
+                                    var input = e.target;
+                                    var colIndex = input.getAttribute('data-col');
+                                    var url = '/setData.cgi?' + colIndex + '=' + input.value;
+                                    var xhr = new XMLHttpRequest();
+                                    xhr.open("GET", url);
+                                    xhr.addEventListener("error", function () {
+                                        alert('保存失败');
+                                    }, false);
+                                    xhr.onreadystatechange = function (e) {
+                                        if (xhr.readyState == 4) {
+                                            if (xhr.status === 200) {
+                                                input.blur();
+                                            } else {
+                                                alert('保存失败');
+                                            }
+                                        }
+                                    }
+                                    xhr.send();
+                                }
+                            });
+                        }
+                    }, 500)
+
+                } else {
+                    // alert('请求失败');
+                    clearInterval(Timer);
+                }
+            }
+        };
+    }
+    var Timer = setInterval("getCollectionData()" , 2000);
+</script>
+</body>
+</html>
